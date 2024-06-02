@@ -1,7 +1,7 @@
-from app.Director import Director
+from app.LocalController import LocalController
 import abc
 
-from app.bungiemanifest import DestinyManifest
+from app.ManifestController import DestinyManifest
 
 
 class Report:
@@ -25,6 +25,6 @@ class Report:
     def save(self):
         print("Report> Saving %s" % self.getName())
         assert self.fig is not None
-        filename = '%s/%s.html' % (Director.GetResultDirectory(self.displayName), self.getName())
+        filename = '%s/%s.html' % (LocalController.GetResultDirectory(self.displayName), self.getName())
         with open(filename, "w") as f:
             f.write(self.fig.to_html(full_html=False, include_plotlyjs='cdn'))

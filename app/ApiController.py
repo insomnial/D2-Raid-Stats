@@ -2,16 +2,18 @@ from typing import Dict
 import requests
 from app.data.classhash import CLASS_HASH
 
-
 API_ROOT_PATH = "https://www.bungie.net/Platform"
 
+class ApiController:
 
-class BungieApi:
+
     __HEADERS: Dict[str, str]
+
 
     def __init__(self, api_key: str):
         self.__HEADERS = {"X-API-Key": api_key}
         pass
+
 
     def getProfile(self, membershipType, destinyMembershipId, components=[100]):
         params = {}
@@ -21,12 +23,14 @@ class BungieApi:
 
         return (api_call.json())['Response']
 
+
     def getAccountStats(self, membershipType, destinyMembershipId):
         params = {}
 
         api_call = requests.get(f'{API_ROOT_PATH}/Destiny2/{membershipType}/Account/{destinyMembershipId}/Stats', headers=self.__HEADERS, params=params)
 
         return (api_call.json())['Response']
+
 
     def getActivities(self, membershipType, destinyMembershipId, characterId, page=0, count=250, mode=None):
         params = {}
@@ -40,6 +44,7 @@ class BungieApi:
             print(json_)
         return json_['Response']
 
+
     def getPGCR(self, activityId):
         params = {}
 
@@ -49,9 +54,11 @@ class BungieApi:
             return None
         return (api_call.json())['Response']
 
+
     def getItem(self, itemReferenceId):
         pass
     
+
     def getCharacterClass(self, membershipType, destinyMembershipId, characterId):
         params = {}
         params['components'] = 200
@@ -64,3 +71,4 @@ class BungieApi:
         classHash = (api_call.json())['Response']['character']['data']['classHash']
 
         return CLASS_HASH[classHash]
+    

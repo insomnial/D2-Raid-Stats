@@ -1,13 +1,13 @@
 import dateutil.parser
 import pandas as pd
-from app.Director import Director
+from app.LocalController import LocalController
 from app.reports.ReportBase import Report
 
 
 class FireteamActivityReport(Report):
 
     def save(self):
-        with open("%s/%s.csv" % (Director.GetResultDirectory(self.displayName), "[ALL] table - fireteam member activities"), "w", encoding='utf-8') as f:
+        with open("%s/%s.csv" % (LocalController.GetResultDirectory(self.displayName), "[ALL] table - fireteam member activities"), "w", encoding='utf-8') as f:
             self.df.to_csv(f, index=False)
 
     def getName(self) -> str:

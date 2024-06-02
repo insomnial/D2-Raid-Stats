@@ -1,5 +1,5 @@
 import pandas as pd
-from app.Director import Director
+from app.LocalController import LocalController
 from app.reports.ReportBase import Report
 import bar_chart_race as bcr
 from dateutil import parser
@@ -23,7 +23,7 @@ class ActivityTypeRaceReport(Report):
         df = self.generateData(data)
         bcr.bar_chart_race(
             df=df,
-            filename=Director.GetResultDirectory(self.displayName) + "/"
+            filename=LocalController.GetResultDirectory(self.displayName) + "/"
                      + "[ALL] race - activity type playtime." + self.video_type,
             orientation='h',
             sort='desc',

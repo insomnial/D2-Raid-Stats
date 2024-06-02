@@ -1,6 +1,6 @@
 import pandas as pd
 
-from app.Director import Director
+from app.LocalController import LocalController
 from app.reports.ReportBase import Report
 import bar_chart_race as bcr
 from dateutil import parser
@@ -30,7 +30,7 @@ class WeaponRaceReport(Report):
         df = self.generateData(data, type)
         bcr.bar_chart_race(
             df=df,
-            filename=Director.GetResultDirectory(self.displayName) + "/"
+            filename=LocalController.GetResultDirectory(self.displayName) + "/"
                      + "[" + type.upper() + "] race - weapon usage." + self.video_type,
             orientation='h',
             sort='desc',
