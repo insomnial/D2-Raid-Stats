@@ -7,11 +7,14 @@ BUNGIE_BASE = "https://bungie.net/"
 BUNGIE_API_BASE = "https://bungie.net/Platform/"
 
 class DestinyManifest():
+
+
     def __init__(self):
         self.ActivityNames = None
         self.ActivityTypeNames = None
         self.ItemDefinitions = None
         self.CacheFolder = None
+
 
     def update(self):
         self.CacheFolder = GetCacheFolder()
@@ -101,6 +104,7 @@ def GetInventoryItemDefinitions():
 
 def GetClassDefinition():
     return CLASS_HASH
+
 
 def GetActivityNames():
     data = GetManifestDefinitions("DestinyActivityDefinition")

@@ -1,15 +1,17 @@
 import os
 from itertools import zip_longest
 
-from app.Director import Director
-from app.bungieapi import BungieApi
+from app.LocalController import LocalController
+from app.ApiController import ApiController
 import json
 
 from app.internal_timer import Timer
 
 
 class PGCRCollector:
-    def __init__(self, membershipType, membershipId, api: BungieApi, pool) -> None:
+    _RAID_MODE = 4
+
+    def __init__(self, membershipType, membershipId, api: ApiController, pool) -> None:
         super().__init__()
         self.processPool = pool
         self.membershipType = membershipType
@@ -18,6 +20,7 @@ class PGCRCollector:
         self.characters = None
         self.activities = None
         self.displayName = None
+
 
     def getProfile(self):
         print("> Get profile")
@@ -28,8 +31,10 @@ class PGCRCollector:
         print(f"Found profile: {self.displayName}")
         return self
     
+
     def getDisplayName(self):
         return self.displayName
+
 
     def getCharacters(self):
         print("> Get Characters")
@@ -46,19 +51,20 @@ class PGCRCollector:
             print(f"{char['characterId']}{'' if className == None else ' | ' + className}")
         return self
 
+
     def getActivities(self, limit=None):
         print("> Get Activities")
         assert self.characters is not None
         assert len(self.characters) > 0
 
-        existingPgcrList = [f[5:-5] for f in os.listdir(Director.GetPGCRDirectory(self.displayName))]
+        existingPgcrList = [f[5:-5] for f in os.listdir(LocalController.GetPGCRDirectory(self.displayName))]
 
         self.activities = []
         for k, char_id in enumerate(self.characters):
             page = 0
 
             def downloadActivityPage(page):
-                act = self.api.getActivities(self.membershipType, self.membershipId, char_id, page=page)
+                act = self.api.getActivities(self.membershipType, self.membershipId, char_id, page=page, mode=self._RAID_MODE)
                 if "activities" not in act:
                     return None
                 return [e["activityDetails"]["instanceId"] for e in act["activities"] if e["activityDetails"]["instanceId"] not in existingPgcrList]
@@ -87,6 +93,7 @@ class PGCRCollector:
 
         return self
 
+
     def getPGCRs(self):
         bungo = self.api
 
@@ -99,7 +106,7 @@ class PGCRCollector:
                 tries += 1
                 pgcr = bungo.getPGCR(id)
 
-            with open("%s/pgcr_%s.json" % (Director.GetPGCRDirectory(self.displayName), pgcr["activityDetails"]["instanceId"]), "w", encoding='utf-8') as f:
+            with open("%s/pgcr_%s.json" % (LocalController.GetPGCRDirectory(self.displayName), pgcr["activityDetails"]["instanceId"]), "w", encoding='utf-8') as f:
                 f.write(json.dumps(pgcr))
 
         if len(self.activities) == 0:
@@ -110,12 +117,14 @@ class PGCRCollector:
         list(tqdm(self.processPool.imap(downloadPGCR, self.activities), total=len(self.activities), desc="Downloading PGCRs"))
         return self
 
+
     def combineAllPgcrs(self):
         all = self.getAllPgcrs()
         with Timer("Write all PGCRs to one file"):
-            with open(Director.GetAllPgcrFilename(self.displayName), "w", encoding='utf-8') as f:
+            with open(LocalController.GetAllPgcrFilename(self.displayName), "w", encoding='utf-8') as f:
                 json.dump(all, f, ensure_ascii=False)
         return self
+
 
     def getAllPgcrs(self):
 
@@ -132,7 +141,7 @@ class PGCRCollector:
             return r
 
         with Timer("Get all PGCRs from individual files"):
-            root = Director.GetPGCRDirectory(self.displayName)
+            root = LocalController.GetPGCRDirectory(self.displayName)
             fileList = ["%s/%s" % (root, f) for f in os.listdir(root)]
             chunks = list(zip_longest(*[iter(fileList)] * 100, fillvalue=None))
             pgcrs = self.processPool.amap(loadJson, chunks).get()

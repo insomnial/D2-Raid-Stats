@@ -1,6 +1,6 @@
 import pandas as pd
 
-from app.Director import Director
+from app.LocalController import LocalController
 from app.reports.ReportBase import Report
 import bar_chart_race as bcr
 from dateutil import parser
@@ -25,7 +25,7 @@ class FireteamRaceReport(Report):
 
         bcr.bar_chart_race(
             df=df,
-            filename=Director.GetResultDirectory(self.displayName, ) + "/" + self.getName() + "." + self.video_type,
+            filename=LocalController.GetResultDirectory(self.displayName, ) + "/" + self.getName() + "." + self.video_type,
             orientation='h',
             sort='desc',
             n_bars=20,

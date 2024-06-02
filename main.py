@@ -1,8 +1,8 @@
-from app.Director import Director
-from app.bungiemanifest import DestinyManifest
+from app.LocalController import LocalController
+from app.ManifestController import DestinyManifest
 from app.PgcrCollector import PGCRCollector
 from app.Zipper import Zipper
-from app.bungieapi import BungieApi
+from app.ApiController import ApiController
 from app.reports.ActivityCountReport import ActivityCountReport
 from app.reports.ActivityLocationTimeReport import ActivityLocationTimeReport
 from app.reports.ActivityLocationWeaponReport import ActivityLocationWeaponReport
@@ -19,6 +19,7 @@ from app.reports.WeaponKillTreeReport import WeaponKillTreeReport
 from app.reports.WeaponRaceReport import WeaponRaceReport
 from app.reports.WeaponReport import WeaponReport
 from app.reports.WeekdayReport import WeekdayReport
+
 
 ###############################################################################
 #
@@ -65,16 +66,16 @@ if __name__ == '__main__':
     API_KEY = os.getenv('BUNGIE_API_KEY')
     # API_KEY = "123456789"
     
-    api = BungieApi(API_KEY)
+    api = ApiController(API_KEY)
     # "mp4" if you installed ffmpeg which you should; see README.d. otherwise "gif" if you do not.
     VIDEO_TYPE = "mp4"
 
     pc = PGCRCollector(*USED_MEMBERSHIP, api, pool)
     displayName = pc.getProfile().getDisplayName()
 
-    Director.CreateDirectoriesForUser(displayName)
-    Director.ClearResultDirectory(displayName)
-    Director.CreateDirectoriesForUser(displayName)
+    LocalController.CreateDirectoriesForUser(displayName)
+    LocalController.ClearResultDirectory(displayName)
+    LocalController.CreateDirectoriesForUser(displayName)
     
     pc.getCharacters().getActivities(limit=None).getPGCRs()  # .combineAllPgcrs()
     data = pc.getAllPgcrs()
@@ -102,5 +103,5 @@ if __name__ == '__main__':
     for report in reports:
         report.generate(data).save()
 
-    Zipper.zip_directory(Director.GetResultDirectory(displayName), Director.GetZipPath(displayName))
-    print("Generated ZIP:", Director.GetZipPath(displayName))
+    Zipper.zip_directory(LocalController.GetResultDirectory(displayName), LocalController.GetZipPath(displayName))
+    print("Generated ZIP:", LocalController.GetZipPath(displayName))
