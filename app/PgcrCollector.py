@@ -40,7 +40,9 @@ class PGCRCollector:
         print("> Get Characters")
         account_stats = self.api.getAccountStats(self.membershipType, self.membershipId)
         allCharacters = account_stats['characters']
+        allCharacters = sorted(allCharacters, key=lambda item: item['characterId'])
         self.characters = [c["characterId"] for c in allCharacters]
+        (self.characters).sort()
         print("Found characters: ", len(self.characters))
         for char in allCharacters:
             deleted = char['deleted']
