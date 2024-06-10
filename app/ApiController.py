@@ -6,7 +6,6 @@ API_ROOT_PATH = "https://www.bungie.net/Platform"
 
 class ApiController:
 
-
     __HEADERS: Dict[str, str]
 
     ###########################################################################
@@ -19,6 +18,9 @@ class ApiController:
         pass
 
 
+    # Makes the request to the API endpoint. Returns everything under
+    # 'Response' element by default.
+    #
     def __call_api(self, method: str, apiString: str, params = None, timeout = None):
         import time
         for i in range(0, 3):
@@ -49,23 +51,21 @@ class ApiController:
     ###########################################################################
     def getProfile(self, membershipType, destinyMembershipId):
         params = {}
-        params["components"] = [100]
-
+        params["components"] = [100] # Profiles
         call = self.__call_api(
             method='GET', 
             apiString=f'{API_ROOT_PATH}/Destiny2/{membershipType}/Profile/{destinyMembershipId}',
             params=params
         )
-
         return call
 
 
     def getAccountStats(self, membershipType, destinyMembershipId):
-        params = {}
-
-        api_call = requests.get(f'{API_ROOT_PATH}/Destiny2/{membershipType}/Account/{destinyMembershipId}/Stats', headers=self.__HEADERS, params=params)
-
-        return (api_call.json())['Response']
+        call = self.__call_api(
+            method='GET',
+            apiString=f'{API_ROOT_PATH}/Destiny2/{membershipType}/Account/{destinyMembershipId}/Stats',
+        )
+        return call
 
 
     def getActivities(self, membershipType, destinyMembershipId, characterId, page=0, count=250, mode=None):
@@ -73,22 +73,21 @@ class ApiController:
         if page is not None: params["page"] = page
         if count is not None: params["count"] = count
         if mode is not None: params["mode"] = mode
-
-        api_call = requests.get(f'{API_ROOT_PATH}/Destiny2/{membershipType}/Account/{destinyMembershipId}/Character/{characterId}/Stats/Activities/', headers=self.__HEADERS, params=params)
-        json_ = (api_call.json())
-        if ("Response" not in json_):
-            print(json_)
-        return json_['Response']
+        call = self.__call_api(
+            method='GET',
+            apiString=f'{API_ROOT_PATH}/Destiny2/{membershipType}/Account/{destinyMembershipId}/Character/{characterId}/Stats/Activities/',
+            params=params
+        )
+        return call
 
 
     def getPGCR(self, activityId):
-        params = {}
-
-        try:
-            api_call = requests.get(f'{API_ROOT_PATH}/Destiny2/Stats/PostGameCarnageReport/{activityId}/', headers=self.__HEADERS, params=params, timeout=(10, 10))
-        except:
-            return None
-        return (api_call.json())['Response']
+        call = self.__call_api(
+            method='GET',
+            apiString=f'{API_ROOT_PATH}/Destiny2/Stats/PostGameCarnageReport/{activityId}/',
+            timeout=(10, 10)
+        )
+        return call
 
 
     def getItem(self, itemReferenceId):
@@ -99,12 +98,14 @@ class ApiController:
         params = {}
         params['components'] = 200
 
-        try:
-            api_call = requests.get(f'{API_ROOT_PATH}/Destiny2/{membershipType}/Profile/{destinyMembershipId}/Character/{characterId}', headers=self.__HEADERS, params=params, timeout=(10, 10))
-        except:
-            return None
+        call = self.__call_api(
+            method='GET',
+            apiString=f'{API_ROOT_PATH}/Destiny2/{membershipType}/Profile/{destinyMembershipId}/Character/{characterId}',
+            params=params,
+            timeout=(10, 10)
+        )
         
-        classHash = (api_call.json())['Response']['character']['data']['classHash']
+        classHash = call['character']['data']['classHash']
 
         return CLASS_HASH[classHash]
     
