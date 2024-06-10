@@ -9,7 +9,7 @@ from app.internal_timer import Timer
 
 
 class PGCRCollector:
-    _RAID_MODE = 4
+    __RAID_MODE = 4
 
     def __init__(self, membershipType, membershipId, api: ApiController, pool) -> None:
         super().__init__()
@@ -64,7 +64,7 @@ class PGCRCollector:
             page = 0
 
             def downloadActivityPage(page):
-                act = self.api.getActivities(self.membershipType, self.membershipId, char_id, page=page, mode=self._RAID_MODE)
+                act = self.api.getActivities(self.membershipType, self.membershipId, char_id, page=page, mode=self.__RAID_MODE)
                 if "activities" not in act:
                     return None
                 return [e["activityDetails"]["instanceId"] for e in act["activities"] if e["activityDetails"]["instanceId"] not in existingPgcrList]
