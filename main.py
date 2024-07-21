@@ -84,21 +84,22 @@ if __name__ == '__main__':
 
     reports = [
         ActivityCountReport(*USED_MEMBERSHIP, displayName, manifest),
-        ActivityLocationTimeReport(*USED_MEMBERSHIP, displayName, manifest),
-        ActivityLocationWeaponReport(*USED_MEMBERSHIP, displayName, manifest),
-        ActivityTypeRaceReport(*USED_MEMBERSHIP, displayName, manifest, video_type=VIDEO_TYPE),
-        ActivityWinrateReport(*USED_MEMBERSHIP, displayName, manifest),
-        FireteamActivityReport(*USED_MEMBERSHIP, displayName, manifest),
-        FireteamRaceReport(*USED_MEMBERSHIP, displayName, manifest, video_type=VIDEO_TYPE),
-        KDReport(*USED_MEMBERSHIP, displayName, manifest),
-        KillsDeathsAssistsReport(*USED_MEMBERSHIP, displayName, manifest),
-        LightLevelReport(*USED_MEMBERSHIP, displayName, manifest),
-        PlaytimeCharacterReport(*USED_MEMBERSHIP, displayName, manifest),
-        PlaytimeReport(*USED_MEMBERSHIP, displayName, manifest),
-        WeaponKillTreeReport(*USED_MEMBERSHIP, displayName, manifest),
-        WeaponRaceReport(*USED_MEMBERSHIP, displayName, manifest, video_type=VIDEO_TYPE),
-        WeaponReport(*USED_MEMBERSHIP, displayName, manifest),
-        WeekdayReport(*USED_MEMBERSHIP, displayName, manifest)
+        # commenting these out for the moment so we can focus on new raid stats
+        # ActivityLocationTimeReport(*USED_MEMBERSHIP, displayName, manifest),
+        # ActivityLocationWeaponReport(*USED_MEMBERSHIP, displayName, manifest),
+        # ActivityTypeRaceReport(*USED_MEMBERSHIP, displayName, manifest, video_type=VIDEO_TYPE),
+        # ActivityWinrateReport(*USED_MEMBERSHIP, displayName, manifest),
+        # FireteamActivityReport(*USED_MEMBERSHIP, displayName, manifest),
+        # FireteamRaceReport(*USED_MEMBERSHIP, displayName, manifest, video_type=VIDEO_TYPE),
+        # KDReport(*USED_MEMBERSHIP, displayName, manifest),
+        # KillsDeathsAssistsReport(*USED_MEMBERSHIP, displayName, manifest),
+        # LightLevelReport(*USED_MEMBERSHIP, displayName, manifest),
+        # PlaytimeCharacterReport(*USED_MEMBERSHIP, displayName, manifest),
+        # PlaytimeReport(*USED_MEMBERSHIP, displayName, manifest),
+        # WeaponKillTreeReport(*USED_MEMBERSHIP, displayName, manifest),
+        # WeaponRaceReport(*USED_MEMBERSHIP, displayName, manifest, video_type=VIDEO_TYPE),
+        # WeaponReport(*USED_MEMBERSHIP, displayName, manifest),
+        # WeekdayReport(*USED_MEMBERSHIP, displayName, manifest)
     ]
     for report in reports:
         report.generate(data).save()
