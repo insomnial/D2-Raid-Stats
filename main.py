@@ -15,6 +15,7 @@ from app.reports.KillsDeathsAssistsReport import KillsDeathsAssistsReport
 from app.reports.LightLevelReport import LightLevelReport
 from app.reports.PlaytimeCharacterReport import PlaytimeCharacterReport
 from app.reports.PlaytimeReport import PlaytimeReport
+from app.reports.RaidsReport import RaidsReport
 from app.reports.WeaponKillTreeReport import WeaponKillTreeReport
 from app.reports.WeaponRaceReport import WeaponRaceReport
 from app.reports.WeaponReport import WeaponReport
@@ -83,8 +84,7 @@ if __name__ == '__main__':
     pool.close()
 
     reports = [
-        ActivityCountReport(*USED_MEMBERSHIP, displayName, manifest),
-        # commenting these out for the moment so we can focus on new raid stats
+        # ActivityCountReport(*USED_MEMBERSHIP, displayName, manifest),
         # ActivityLocationTimeReport(*USED_MEMBERSHIP, displayName, manifest),
         # ActivityLocationWeaponReport(*USED_MEMBERSHIP, displayName, manifest),
         # ActivityTypeRaceReport(*USED_MEMBERSHIP, displayName, manifest, video_type=VIDEO_TYPE),
@@ -94,8 +94,9 @@ if __name__ == '__main__':
         # KDReport(*USED_MEMBERSHIP, displayName, manifest),
         # KillsDeathsAssistsReport(*USED_MEMBERSHIP, displayName, manifest),
         # LightLevelReport(*USED_MEMBERSHIP, displayName, manifest),
-        # PlaytimeCharacterReport(*USED_MEMBERSHIP, displayName, manifest),
+        PlaytimeCharacterReport(*USED_MEMBERSHIP, displayName, manifest),
         # PlaytimeReport(*USED_MEMBERSHIP, displayName, manifest),
+        RaidsReport(*USED_MEMBERSHIP, displayName, manifest)
         # WeaponKillTreeReport(*USED_MEMBERSHIP, displayName, manifest),
         # WeaponRaceReport(*USED_MEMBERSHIP, displayName, manifest, video_type=VIDEO_TYPE),
         # WeaponReport(*USED_MEMBERSHIP, displayName, manifest),
