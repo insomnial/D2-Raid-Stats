@@ -144,7 +144,7 @@ class PGCRCollector:
 
         with Timer("Get all PGCRs from individual files"):
             root = LocalController.GetPGCRDirectory(self.displayName)
-            fileList = ["%s/%s" % (root, f) for f in os.listdir(root)]
+            fileList = ["%s/%s" % (root, f) for f in os.listdir(root) if not f.startswith('.')]
             chunks = list(zip_longest(*[iter(fileList)] * 100, fillvalue=None))
             pgcrs = self.processPool.amap(loadJson, chunks).get()
             all = [item for sublist in pgcrs for item in sublist]

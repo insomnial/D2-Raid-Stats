@@ -94,7 +94,7 @@ if __name__ == '__main__':
         # KDReport(*USED_MEMBERSHIP, displayName, manifest),
         # KillsDeathsAssistsReport(*USED_MEMBERSHIP, displayName, manifest),
         # LightLevelReport(*USED_MEMBERSHIP, displayName, manifest),
-        PlaytimeCharacterReport(*USED_MEMBERSHIP, displayName, manifest),
+        # PlaytimeCharacterReport(*USED_MEMBERSHIP, displayName, manifest),
         # PlaytimeReport(*USED_MEMBERSHIP, displayName, manifest),
         RaidsReport(*USED_MEMBERSHIP, displayName, manifest)
         # WeaponKillTreeReport(*USED_MEMBERSHIP, displayName, manifest),

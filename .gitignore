@@ -163,5 +163,8 @@ cython_debug/
 .vscode/
 
 # generated files
-cache/
-data/
+/cache/
+/data/
+
+# mac artifacts
+.DS_Store
